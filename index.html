@@ -2,132 +2,164 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Zone Pricing Search</title>
+<title>Delivery Zone Finder</title>
 
 <style>
-
 body{
-font-family: Arial;
-background:#f4f4f4;
-text-align:center;
-padding-top:100px;
+  font-family: Arial, sans-serif;
+  background:#eef2f7;
+  margin:0;
+  padding:0;
 }
-
+header{
+  background:#2c3e50;
+  color:white;
+  padding:20px;
+  text-align:center;
+  font-size:28px;
+}
 .container{
-background:white;
-width:400px;
-margin:auto;
-padding:30px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+  max-width:700px;
+  margin:60px auto;
+  background:white;
+  padding:40px;
+  border-radius:10px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  text-align:center;
 }
-
 input{
-padding:10px;
-width:200px;
-font-size:16px;
+  padding:12px;
+  font-size:18px;
+  width:220px;
+  border:1px solid #ccc;
+  border-radius:6px;
 }
-
 button{
-padding:10px 20px;
-font-size:16px;
-background:#3498db;
-color:white;
-border:none;
-cursor:pointer;
+  padding:12px 25px;
+  font-size:18px;
+  background:#3498db;
+  border:none;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+  margin-left:10px;
 }
-
 button:hover{
-background:#2980b9;
+  background:#2980b9;
 }
-
-#result{
-margin-top:20px;
-font-size:18px;
-font-weight:bold;
+.result{
+  margin-top:30px;
+  padding:20px;
+  border-radius:8px;
+  background:#f4f6f9;
+  font-size:20px;
+  font-weight:bold;
 }
-
+.zone{
+  font-size:28px;
+  color:#2c3e50;
+}
+.price{
+  color:#27ae60;
+  font-size:24px;
+  margin-top:10px;
+}
+.days{
+  margin-top:5px;
+  color:#555;
+}
+.city{
+  font-size:22px;
+  color:#c0392b;
+  margin-top:5px;
+}
 </style>
-
 </head>
 
 <body>
 
+<header>
+Delivery Zone Finder
+</header>
+
 <div class="container">
-
-<h2>Zone Price Checker</h2>
-
-<p>Enter ZIP Code</p>
-
-<input type="text" id="zip" placeholder="Example: 77002">
-
-<br><br>
-
-<button onclick="searchZone()">Search</button>
-
-<div id="result"></div>
-
+<h2>Enter Customer ZIP Code</h2>
+<input id="zipInput" type="text" placeholder="Example: 77001">
+<button onclick="findZone()">Search</button>
+<div id="result" class="result" style="display:none"></div>
 </div>
 
 <script>
-
-const pricing = {
-
-1:{days:"Saturday Only", price:"$95.00"},
-2:{days:"Tue, Thur, Sat", price:"$55.00"},
-3:{days:"Tue, Thur, Sat", price:"$25.00"},
-4:{days:"Tue, Thur, Sat", price:"$65.00"},
-5:{days:"Tue, Thur, Sat", price:"$20.00"}
-
-};
-
-
 const zones = {
-
-"77001":1,
-"77002":1,
-"77003":1,
-
-"77004":2,
-"77005":2,
-"77006":2,
-
-"77007":3,
-"77008":3,
-
-"77009":4,
-"77010":4,
-
-"77011":5,
-"77012":5
-
+  zone1:{
+    data:[
+      {zip:"77001", city:"Houston"},
+      {zip:"77002", city:"Houston"},
+      {zip:"77003", city:"Houston"},
+      {zip:"77004", city:"Houston"}
+    ],
+    price:"$95.00",
+    days:"Saturday Only"
+  },
+  zone2:{
+    data:[
+      {zip:"77005", city:"Houston"},
+      {zip:"77006", city:"Houston"},
+      {zip:"77007", city:"Houston"}
+    ],
+    price:"$55.00",
+    days:"Tue, Thur & Sat"
+  },
+  zone3:{
+    data:[
+      {zip:"77008", city:"Houston"},
+      {zip:"77009", city:"Houston"},
+      {zip:"77010", city:"Houston"}
+    ],
+    price:"$25.00",
+    days:"Tue, Thur & Sat"
+  },
+  zone4:{
+    data:[
+      {zip:"77011", city:"Houston"},
+      {zip:"77012", city:"Houston"},
+      {zip:"77013", city:"Houston"}
+    ],
+    price:"$65.00",
+    days:"Tue, Thur & Sat"
+  },
+  zone5:{
+    data:[
+      {zip:"77014", city:"Houston"},
+      {zip:"77015", city:"Houston"},
+      {zip:"77016", city:"Houston"}
+    ],
+    price:"$20.00",
+    days:"Tue, Thur & Sat"
+  }
 };
 
+function findZone(){
+  let zip=document.getElementById("zipInput").value.trim();
+  let resultBox=document.getElementById("result");
 
-function searchZone(){
+  for(let zone in zones){
+    const match = zones[zone].data.find(item => item.zip === zip);
+    if(match){
+      resultBox.style.display="block";
+      resultBox.innerHTML=`
+        <div class="city">City: ${match.city}</div>
+        <div class="zone">${zone.toUpperCase()}</div>
+        <div class="price">Price: ${zones[zone].price}</div>
+        <div class="days">Service Days: ${zones[zone].days}</div>
+      `;
+      return;
+    }
+  }
 
-let zip = document.getElementById("zip").value.trim();
-
-let zone = zones[zip];
-
-if(zone){
-
-let result = pricing[zone];
-
-document.getElementById("result").innerHTML =
-
-"ZONE "+zone+
-"<br>Days: "+result.days+
-"<br>Price: "+result.price;
-
-}else{
-
-document.getElementById("result").innerHTML="ZIP code not found";
-
+  resultBox.style.display="block";
+  resultBox.innerHTML="ZIP Code not found in delivery zones.";
 }
-
-}
-
 </script>
 
 </body>
