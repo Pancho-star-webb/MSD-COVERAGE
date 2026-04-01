@@ -2450,26 +2450,139 @@ const zones = {
     ],
     price:"$20.00",
     days:"Tue, Thur & Sat"
-  }
+  },
+ inTown:{
+  data:[
+{zip:"77001", city:"Houston"},
+{zip:"77002", city:"Houston"},
+{zip:"77003", city:"Houston"},
+{zip:"77004", city:"Houston"},
+{zip:"77005", city:"Houston"},
+{zip:"77006", city:"Houston"},
+{zip:"77007", city:"Houston"},
+{zip:"77008", city:"Houston"},
+{zip:"77009", city:"Houston"},
+{zip:"77010", city:"Houston"},
+{zip:"77011", city:"Houston"},
+{zip:"77012", city:"Houston"},
+{zip:"77013", city:"Houston"},
+{zip:"77014", city:"Houston"},
+{zip:"77015", city:"Houston"},
+{zip:"77016", city:"Houston"},
+{zip:"77017", city:"Houston"},
+{zip:"77018", city:"Houston"},
+{zip:"77019", city:"Houston"},
+{zip:"77020", city:"Houston"},
+{zip:"77021", city:"Houston"},
+{zip:"77022", city:"Houston"},
+{zip:"77023", city:"Houston"},
+{zip:"77024", city:"Houston"},
+{zip:"77025", city:"Houston"},
+{zip:"77026", city:"Houston"},
+{zip:"77027", city:"Houston"},
+{zip:"77028", city:"Houston"},
+{zip:"77029", city:"Houston"},
+{zip:"77030", city:"Houston"},
+{zip:"77031", city:"Houston"},
+{zip:"77032", city:"Houston"},
+{zip:"77033", city:"Houston"},
+{zip:"77034", city:"Houston"},
+{zip:"77035", city:"Houston"},
+{zip:"77036", city:"Houston"},
+{zip:"77037", city:"Houston"},
+{zip:"77038", city:"Houston"},
+{zip:"77039", city:"Houston"},
+{zip:"77040", city:"Houston"},
+{zip:"77041", city:"Houston"},
+{zip:"77042", city:"Houston"},
+{zip:"77043", city:"Houston"},
+{zip:"77044", city:"Houston"},
+{zip:"77045", city:"Houston"},
+{zip:"77046", city:"Houston"},
+{zip:"77047", city:"Houston"},
+{zip:"77048", city:"Houston"},
+{zip:"77049", city:"Houston"},
+{zip:"77050", city:"Houston"},
+{zip:"77051", city:"Houston"},
+{zip:"77053", city:"Houston"},
+{zip:"77054", city:"Houston"},
+{zip:"77055", city:"Houston"},
+{zip:"77056", city:"Houston"},
+{zip:"77057", city:"Houston"},
+{zip:"77058", city:"Houston"},
+{zip:"77059", city:"Houston"},
+{zip:"77060", city:"Houston"},
+{zip:"77061", city:"Houston"},
+{zip:"77062", city:"Houston"},
+{zip:"77063", city:"Houston"},
+{zip:"77064", city:"Houston"},
+{zip:"77065", city:"Houston"},
+{zip:"77066", city:"Houston"},
+{zip:"77067", city:"Houston"},
+{zip:"77068", city:"Houston"},
+{zip:"77069", city:"Houston"},
+{zip:"77070", city:"Houston"},
+{zip:"77071", city:"Houston"},
+{zip:"77072", city:"Houston"},
+{zip:"77073", city:"Houston"},
+{zip:"77074", city:"Houston"},
+{zip:"77075", city:"Houston"},
+{zip:"77076", city:"Houston"},
+{zip:"77077", city:"Houston"},
+{zip:"77078", city:"Houston"},
+{zip:"77079", city:"Houston"},
+{zip:"77080", city:"Houston"},
+{zip:"77081", city:"Houston"},
+{zip:"77082", city:"Houston"},
+{zip:"77083", city:"Houston"},
+{zip:"77084", city:"Houston"},
+{zip:"77085", city:"Houston"},
+{zip:"77086", city:"Houston"},
+{zip:"77087", city:"Houston"},
+{zip:"77088", city:"Houston"},
+{zip:"77089", city:"Houston"},
+{zip:"77090", city:"Houston"},
+{zip:"77091", city:"Houston"},
+{zip:"77092", city:"Houston"},
+{zip:"77093", city:"Houston"},
+{zip:"77094", city:"Houston"},
+{zip:"77095", city:"Houston"},
+{zip:"77096", city:"Houston"},
+{zip:"77098", city:"Houston"},
+{zip:"77099", city:"Houston"}
+    },
+  label:"IN TOWN"
+}
 };
 
 function findZone(){
   let zip=document.getElementById("zipInput").value.trim();
   let resultBox=document.getElementById("result");
+for(let zone in zones){
+  const match = zones[zone].data.find(item => item.zip === zip);
 
-  for(let zone in zones){
-    const match = zones[zone].data.find(item => item.zip === zip);
-    if(match){
-      resultBox.style.display="block";
+  if(match){
+    resultBox.style.display="block";
+
+    // ✅ If it's inTown → show IN TOWN
+    if(zone === "inTown"){
       resultBox.innerHTML=`
         <div class="city">City: ${match.city}</div>
-        <div class="zone">${zone.replace("zone","zone ")}</div>
-        <div class="price">Price: ${zones[zone].price}</div>
-        <div class="days">Days of Service: ${zones[zone].days}</div>
+        <div class="zone">IN TOWN</div>
       `;
-      return;
+    } else {
+      // ✅ Normal zones
+      resultBox.innerHTML=`
+        <div class="city">City: ${match.city}</div>
+        <div class="zone">${zone.toUpperCase()}</div>
+        <div class="price">Price: ${zones[zone].price}</div>
+        <div class="days">Service Days: ${zones[zone].days}</div>
+      `;
     }
+
+    return;
   }
+}
 
   resultBox.style.display="block";
   resultBox.innerHTML="ZIP Code not found in delivery zones.";
